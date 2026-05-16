@@ -1,0 +1,30 @@
+[
+  {
+    "step": 1,
+    "title": "유튜브 계정 생성",
+    "description": "TF Couple 채널용 Google 계정 만들기",
+    "folder": "/channel-info/",
+    "done": true
+  },
+  {
+    "step": 2,
+    "title": "배너 이미지 제작",
+    "description": "유튜브 채널 배너 제작 후 업로드",
+    "folder": "/assets/banner/",
+    "done": false
+  },
+  {
+    "step": 3,
+    "title": "프로필 이미지 제작",
+    "description": "T/F 캐릭터 기반 프로필 만들기",
+    "folder": "/assets/profile/",
+    "done": false
+  },
+  {
+    "step": 4,
+    "title": "첫 쇼츠 기획",
+    "description": "하늘은 왜 파란색이야? 쇼츠 구성",
+    "folder": "/contents/shorts/",
+    "done": false
+  }
+]
