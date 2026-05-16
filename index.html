@@ -3,36 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TF Couple</title>
+  <title>TF Couple Making Log</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="container">
-    <p class="label">T와 F 부부의 유튜브 공간</p>
-    <h1>TF Couple</h1>
-    <p class="description">
-      논리형 T와 감성형 F가 살아가는 일상을 기록합니다.
-    </p>
+    <section class="hero">
+      <p class="label">TF Couple Project</p>
+      <h1>T와 F 부부 유튜브 제작 일지</h1>
+      <p class="description">
+        유튜브 채널을 만드는 과정을 체크리스트, 캐릭터 제작, 질문 아이디어, 작업 로그로 쌓아가는 공간입니다.
+      </p>
+    </section>
 
-    <section id="videos" class="video-list"></section>
+    <section class="summary-grid" id="summary"></section>
+
+    <section class="section">
+      <div class="section-title">
+        <p class="label">Do List</p>
+        <h2>시작 전 해야 할 일</h2>
+      </div>
+      <div id="todoList" class="todo-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <p class="label">Content Ideas</p>
+        <h2>첫 번째 콘텐츠 구상</h2>
+      </div>
+      <div id="questionList" class="question-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <p class="label">Character Assets</p>
+        <h2>캐릭터 제작 현황</h2>
+      </div>
+      <div id="assetList" class="asset-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <p class="label">Diary</p>
+        <h2>제작 로그</h2>
+      </div>
+      <div id="logList" class="log-list"></div>
+    </section>
   </main>
 
   <script>
-    async function loadVideos() {
-      const response = await fetch('./data/videos.json');
-      const videos = await response.json();
+    async function loadJson(path) {
+      const response = await fetch(path);
+      return response.json();
+    }
 
-      document.getElementById('videos').innerHTML = videos.map(video => `
-        <article class="card">
-          <span>${video.category}</span>
-          <h2>${video.title}</h2>
-          <p>${video.summary}</p>
-          <a href="${video.url}" target="_blank">영상 보기</a>
+    function renderSummary(todos, questions, assets, logs) {
+      const doneCount = todos.filter(todo => todo.done).length;
+      document.getElementById('summary').innerHTML = `
+        <article class="summary-card"><strong>${doneCount}/${todos.length}</strong><span>완료된 할 일</span></article>
+        <article class="summary-card"><strong>${questions.length}</strong><span>질문 아이디어</span></article>
+        <article class="summary-card"><strong>${assets.length}</strong><span>캐릭터/소스 항목</span></article>
+        <article class="summary-card"><strong>${logs.length}</strong><span>제작 로그</span></article>
+      `;
+    }
+
+    function renderTodos(todos) {
+      document.getElementById('todoList').innerHTML = todos.map(todo => `
+        <article class="todo-card ${todo.done ? 'done' : ''}">
+          <div class="check">${todo.done ? '✓' : ''}</div>
+          <div>
+            <p class="step">Step ${todo.step}</p>
+            <h3>${todo.title}</h3>
+            <p>${todo.description}</p>
+            <small>채워야 할 위치: ${todo.folder}</small>
+          </div>
         </article>
       `).join('');
     }
 
-    loadVideos();
+    function renderQuestions(questions) {
+      document.getElementById('questionList').innerHTML = questions.map((question, index) => `
+        <article class="question-card">
+          <span>Q${index + 1}</span>
+          <h3>${question.question}</h3>
+          <p>${question.angle}</p>
+        </article>
+      `).join('');
+    }
+
+    function renderAssets(assets) {
+      document.getElementById('assetList').innerHTML = assets.map(asset => `
+        <article class="asset-card">
+          <h3>${asset.name}</h3>
+          <p>${asset.status}</p>
+          <small>${asset.folder}</small>
+        </article>
+      `).join('');
+    }
+
+    function renderLogs(logs) {
+      document.getElementById('logList').innerHTML = logs.map(log => `
+        <article class="log-card">
+          <time>${log.date}</time>
+          <h3>${log.title}</h3>
+          <p>${log.note}</p>
+        </article>
+      `).join('');
+    }
+
+    async function init() {
+      const [todos, questions, assets, logs] = await Promise.all([
+        loadJson('./data/todos.json'),
+        loadJson('./data/questions.json'),
+        loadJson('./data/assets.json'),
+        loadJson('./data/logs.json')
+      ]);
+
+      renderSummary(todos, questions, assets, logs);
+      renderTodos(todos);
+      renderQuestions(questions);
+      renderAssets(assets);
+      renderLogs(logs);
+    }
+
+    init();
   </script>
 </body>
 </html>
