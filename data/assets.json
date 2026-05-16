@@ -1,0 +1,17 @@
+[
+  {
+    "name": "T 캐릭터 기본 디자인",
+    "status": "Midjourney 생성 필요",
+    "folder": "/assets/characters/t-boy/"
+  },
+  {
+    "name": "F 캐릭터 기본 디자인",
+    "status": "Midjourney 생성 필요",
+    "folder": "/assets/characters/f-girl/"
+  },
+  {
+    "name": "표정 세트",
+    "status": "웃음 / 당황 / 울먹 버전 제작 예정",
+    "folder": "/assets/characters/expressions/"
+  }
+]
